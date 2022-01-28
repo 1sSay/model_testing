@@ -1,3 +1,6 @@
+from settings import *
+
+
 class Bbox:
     def __init__(self, label, x1, y1, x2, y2):
         self.label = label
@@ -36,7 +39,7 @@ class Bbox:
     def get_bbox_for_writing(self):
         return f"{self.label} {self.x_min} {self.y_min} {self.x_max} {self.y_max}\n"
     
-    def get_bbox_for_YOLO(self, img_width=3840, img_height=2160):
+    def get_bbox_for_YOLO(self, img_width=frame_width, img_height=frame_height):
         x, y = round((self.x_min + self.width / 2) / img_width, 6), round((self.y_min + self.height / 2) / img_height, 6)
         w, h = round(self.width / img_width, 6), round(self.height / img_height, 6)
         return f"{self.label} {x} {y} {w} {h}\n"
@@ -113,3 +116,11 @@ class TrueObj(Bbox):
 
     def get_bbox_for_writing(self):
         return f"{self.label} {self.x_min} {self.y_min} {self.x_max} {self.y_max}"
+
+
+def read_from_YOLO(line, image_width=frame_width, image_height=frame_height):
+    label, x, y, w, h, = map(float, line.split())
+    x, w = map(lambda t: int(t * image_width), [x - (w / 2), w])
+    y, h = map(lambda t: int(t * image_height), [y - (h / 2), h])
+
+    return Bbox(int(label), x, y, x + w, y + h)
