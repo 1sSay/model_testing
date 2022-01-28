@@ -12,7 +12,11 @@ IoU_threshold_FP = 0.10
 # Frame
 blob_size = 832
 overlapping = 0.5
+frame_width = 3840
+frame_height = 2160
 
+dataset_path = 'C:\\Users\\Admin\\Desktop\\Schedule\\9'
+name_for_stats = 'Train'
 model = 'yolov4_1_3_832_832_static_simp.onnx'
 
 # Thresholds
